@@ -4,9 +4,12 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
+import android.view.View;
 
 import androidx.annotation.Nullable;
 
+import com.geetol.sdk.GeetolConfig;
+import com.geetol.sdk.GeetolSDK;
 import com.geetol.sdk.constant.MMKVKeys;
 import com.geetol.sdk.network.AppApi;
 import com.geetol.sdk.network.GTRetrofitClient;
@@ -253,6 +256,16 @@ public class AppConfigManager {
                     public void onNext(@NonNull UserConfig userConfig) {
                         if (userConfig.isIssucc()) {
                             AppConfigManager.getInstance().setUserConfig(userConfig);
+
+                            //广告判断
+                            if (!GeetolSDK.getConfig().mxgg().isEmpty()){
+                                if (AppConfigManager.getInstance().getSwtVal1(GeetolSDK.getConfig().mxgg(), 1) == 1) {
+                                    MMKVUtil.encode(MMKVKeys.GXH_GG,"1");
+                                }else {
+                                    MMKVUtil.encode(MMKVKeys.GXH_GG,"0");
+                                }
+                            }
+
                         } else if (TextUtils.equals(userConfig.getCode(), "0x1002")) {
                             logout();
                         }

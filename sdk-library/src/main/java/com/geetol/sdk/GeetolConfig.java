@@ -54,17 +54,22 @@ public class GeetolConfig {
      * DEBUG模式
      */
     private final boolean mDebug;
+    /**
+     * 小米广告后台值
+     */
+    private final String mXmKey;
 
     private GeetolConfig(String mBaseUrl,
-                        String mAppId,
-                        String mAppKey,
-                        String mAppName,
-                        String mLogTag,
-                        ScheduledExecutorService mSdkGlobalIOExecutor,
-                        ScheduledExecutorService mSdkGlobalComputerExecutor,
-                        String mBuglyKey,
-                        String mUmengKey,
-                        boolean mDebug) {
+                         String mAppId,
+                         String mAppKey,
+                         String mAppName,
+                         String mLogTag,
+                         ScheduledExecutorService mSdkGlobalIOExecutor,
+                         ScheduledExecutorService mSdkGlobalComputerExecutor,
+                         String mBuglyKey,
+                         String mUmengKey,
+                         boolean mDebug,
+                         String mXmKey) {
         if (TextUtils.isEmpty(mBaseUrl)
                 || TextUtils.isEmpty(mAppId)
                 || TextUtils.isEmpty(mAppKey)) {
@@ -80,6 +85,7 @@ public class GeetolConfig {
         this.mBuglyKey = mBuglyKey;
         this.mUmengKey = mUmengKey;
         this.mDebug = mDebug;
+        this.mXmKey = mXmKey;
     }
 
     public String getBaseUrl() {
@@ -122,6 +128,10 @@ public class GeetolConfig {
         return mDebug;
     }
 
+    public String mxgg() {
+        return mXmKey;
+    }
+
     public static class Builder {
 
         private String mBaseUrl;
@@ -134,6 +144,7 @@ public class GeetolConfig {
         private String mBuglyKey;
         private String mUmengKey;
         private boolean mDebug;
+        private String mXmKey;
 
         public Builder baseUrl(String baseUrl) {
             this.mBaseUrl = baseUrl;
@@ -185,8 +196,13 @@ public class GeetolConfig {
             return this;
         }
 
+        public Builder xmgg(String xmgg) {
+            this.mXmKey = xmgg;
+            return this;
+        }
+
         public GeetolConfig build() {
-            return new GeetolConfig(mBaseUrl, mAppId, mAppKey, mAppName, mLogTag, mSdkGlobalIOExecutor, mSdkGlobalComputerExecutor, mBuglyKey, mUmengKey, mDebug);
+            return new GeetolConfig(mBaseUrl, mAppId, mAppKey, mAppName, mLogTag, mSdkGlobalIOExecutor, mSdkGlobalComputerExecutor, mBuglyKey, mUmengKey, mDebug, mXmKey);
         }
     }
 
