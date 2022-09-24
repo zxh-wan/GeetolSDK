@@ -37,4 +37,9 @@ public interface MMKVKeys {
      */
     String USER_AGREED_PROTOCOL = "user_agreed_protocol";
 
+    /**
+     * 个性化广告
+     */
+    String GXH_GG ="gxh_gg";
+
 }

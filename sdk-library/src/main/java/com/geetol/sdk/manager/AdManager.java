@@ -5,6 +5,10 @@ import android.text.TextUtils;
 import android.view.View;
 
 import com.geetol.sdk.GeetolSDK;
+import com.geetol.sdk.constant.MMKVKeys;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.lang.ref.WeakReference;
 import java.lang.reflect.InvocationHandler;
@@ -13,6 +17,7 @@ import java.lang.reflect.Proxy;
 
 import pers.cxd.corelibrary.AppHolder;
 import pers.cxd.corelibrary.SingletonFactory;
+import pers.cxd.corelibrary.util.MMKVUtil;
 import pers.cxd.corelibrary.util.ScreenUtil;
 import pers.cxd.corelibrary.util.reflection.ReflectionUtil;
 
@@ -34,6 +39,21 @@ public class AdManager {
     private static final String TT_AD_PACKAGE = "com.bytedance.sdk.openadsdk";
 
     private AdManager() {
+    }
+
+    private String getData(String personalTypeValue) {
+        try {
+            JSONArray jsonArray = new JSONArray();
+            JSONObject personalObject = new JSONObject();
+            personalObject.put("name", "personal_ads_type");
+            personalObject.put("value", personalTypeValue);
+            jsonArray.put(personalObject);
+            return jsonArray.toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+
     }
 
     /**
@@ -164,6 +184,8 @@ public class AdManager {
         ReflectionUtil.invokeMethod(builder, "useTextureView", boolean.class, false);
         ReflectionUtil.invokeMethod(builder, "appName", String.class, GeetolSDK.getConfig().getAppName());
         ReflectionUtil.invokeMethod(builder, "titleBarTheme", int.class, 1);
+        //个性广告
+        ReflectionUtil.invokeMethod(builder, "data", String.class, AdManager.getInstance().getData(MMKVUtil.decode(MMKVKeys.GXH_GG,"0")));
         ReflectionUtil.invokeMethod(builder, "allowShowNotify", boolean.class, true);
         ReflectionUtil.invokeMethod(builder, "debug", boolean.class, GeetolSDK.getConfig().debug());
         ReflectionUtil.invokeMethod(builder, "directDownloadNetworkType", int[].class, new int[0]);
@@ -177,6 +199,7 @@ public class AdManager {
                 adConfig,
                 initCallback);
     }
+
 
     public interface SplashCallback {
         void onSplashAdLoaded(View view);
