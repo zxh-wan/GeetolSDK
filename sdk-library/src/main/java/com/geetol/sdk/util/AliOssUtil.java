@@ -23,6 +23,7 @@ import org.apache.commons.io.IOUtils;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.security.MessageDigest;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CountDownLatch;
@@ -62,11 +63,10 @@ public class AliOssUtil {
     }
 
 
-
-    public  static String MD5(String pwd) {
+    public static String MD5(String pwd) {
         //用于加密的字符
-        char md5String[] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
-                'a', 'b', 'c', 'd', 'e', 'f' };
+        char md5String[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+                'a', 'b', 'c', 'd', 'e', 'f'};
         try {
             //使用平台的默认字符集将此 String 编码为 byte序列，并将结果存储到一个新的 byte数组中
             byte[] btInput = pwd.getBytes();
@@ -168,7 +168,7 @@ public class AliOssUtil {
                     }
                     // 文件名为文件内容的MD5
 //                    String aliOssName = new String(Hex.encodeHex(DigestUtils.md5(data)));
-                    String aliOssName = new String(Hex.encodeHex(MD5(data)));
+                    String aliOssName = MD5(uploadFile.getName());
                     sOSSClient.asyncPutObject(new PutObjectRequest(sConfig.getBucketName(), aliOssName, data), new OSSCompletedCallback<PutObjectRequest, PutObjectResult>() {
                         @Override
                         public void onSuccess(PutObjectRequest request, PutObjectResult result) {
