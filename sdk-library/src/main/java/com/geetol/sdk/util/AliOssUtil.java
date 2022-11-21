@@ -78,11 +78,17 @@ public class AliOssUtil {
                     emitter.onComplete();
                     return;
                 }
+
                 String aliOssName = new String(Hex.encodeHex(DigestUtils.md5(data)));
                 sOSSClient.asyncPutObject(new PutObjectRequest(sConfig.getBucketName(), aliOssName, data), new OSSCompletedCallback<PutObjectRequest, PutObjectResult>() {
                     @Override
                     public void onSuccess(PutObjectRequest request, PutObjectResult result) {
-                        emitter.onNext("http://" + sConfig.getBucketName() + "." + sConfig.getEndpoint() + "/" + aliOssName);
+                        if (uploadFile.getAbsoluteFile().toString().contains("pdf")) {
+                            emitter.onNext("http://" + sConfig.getBucketName() + "." + sConfig.getEndpoint() + "/" + aliOssName + "pdf");
+                        } else {
+                            emitter.onNext("http://" + sConfig.getBucketName() + "." + sConfig.getEndpoint() + "/" + aliOssName);
+                        }
+//                        emitter.onNext("http://" + sConfig.getBucketName() + "." + sConfig.getEndpoint() + "/" + aliOssName);
                         emitter.onComplete();
                     }
 
