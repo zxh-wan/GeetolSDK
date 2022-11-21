@@ -134,7 +134,12 @@ public class AliOssUtil {
                     sOSSClient.asyncPutObject(new PutObjectRequest(sConfig.getBucketName(), aliOssName, data), new OSSCompletedCallback<PutObjectRequest, PutObjectResult>() {
                         @Override
                         public void onSuccess(PutObjectRequest request, PutObjectResult result) {
-                            urls.add("http://" + sConfig.getBucketName() + "." + sConfig.getEndpoint() + "/" + aliOssName);
+                            if (uploadFile.getAbsoluteFile().toString().contains("pdf")) {
+                                emitter.onNext("http://" + sConfig.getBucketName() + "." + sConfig.getEndpoint() + "/" + aliOssName + "pdf");
+                            } else {
+                                emitter.onNext("http://" + sConfig.getBucketName() + "." + sConfig.getEndpoint() + "/" + aliOssName);
+                            }
+//                            urls.add("http://" + sConfig.getBucketName() + "." + sConfig.getEndpoint() + "/" + aliOssName);
                             countDownLatch.countDown();
                         }
 

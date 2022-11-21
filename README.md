@@ -26,6 +26,6 @@ dependencyResolutionManagement {
 ```groovy
 dependencies {
     // add sdk lib to your dependencies
-    implementation 'com.github.zxh-wan:GeetolSDK:1.0.9'
+    implementation 'com.github.zxh-wan:GeetolSDK:1.3.0'
 }
 ```
