@@ -135,11 +135,11 @@ public class AliOssUtil {
                         @Override
                         public void onSuccess(PutObjectRequest request, PutObjectResult result) {
                             if (uploadFile.getAbsoluteFile().toString().contains("pdf")) {
-                                emitter.onNext("http://" + sConfig.getBucketName() + "." + sConfig.getEndpoint() + "/" + aliOssName + "pdf");
+                                urls.add("http://" + sConfig.getBucketName() + "." + sConfig.getEndpoint() + "/" + aliOssName + ".pdf");
                             } else {
-                                emitter.onNext("http://" + sConfig.getBucketName() + "." + sConfig.getEndpoint() + "/" + aliOssName);
+                                urls.add("http://" + sConfig.getBucketName() + "." + sConfig.getEndpoint() + "/" + aliOssName);
                             }
-//                            urls.add("http://" + sConfig.getBucketName() + "." + sConfig.getEndpoint() + "/" + aliOssName);
+//
                             countDownLatch.countDown();
                         }
 
