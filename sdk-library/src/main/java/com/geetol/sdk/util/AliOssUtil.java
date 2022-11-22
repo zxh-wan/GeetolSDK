@@ -168,16 +168,14 @@ public class AliOssUtil {
                     }
                     // 文件名为文件内容的MD5
 //                    String aliOssName = new String(Hex.encodeHex(DigestUtils.md5(data)));
-                    String aliOssName = MD5(uploadFile.getName());
+                    String name = uploadFile.getName();
+                    String prefix = name.substring(name.lastIndexOf(".") + 1);
+                    String fileName = getFileNameNoEx(name);
+                    String aliOssName = MD5(fileName)+"."+prefix;
                     sOSSClient.asyncPutObject(new PutObjectRequest(sConfig.getBucketName(), aliOssName, data), new OSSCompletedCallback<PutObjectRequest, PutObjectResult>() {
                         @Override
                         public void onSuccess(PutObjectRequest request, PutObjectResult result) {
-                            if (uploadFile.getAbsoluteFile().toString().contains("pdf")) {
-                                urls.add("http://" + sConfig.getBucketName() + "." + sConfig.getEndpoint() + "/" + aliOssName + ".pdf");
-                            } else {
-                                urls.add("http://" + sConfig.getBucketName() + "." + sConfig.getEndpoint() + "/" + aliOssName);
-                            }
-//
+                            urls.add("http://" + sConfig.getBucketName() + "." + sConfig.getEndpoint() + "/" + aliOssName);
                             countDownLatch.countDown();
                         }
 
@@ -199,6 +197,20 @@ public class AliOssUtil {
             emitter.onComplete();
         }), observer, RxUtil.Transformers.IOToMain());
     }
+
+    /*
+     * Java文件操作 获取不带扩展名的文件名
+     * */
+    public static String getFileNameNoEx(String filename) {
+        if ((filename != null) && (filename.length() > 0)) {
+            int dot = filename.lastIndexOf('.');
+            if ((dot > -1) && (dot < (filename.length()))) {
+                return filename.substring(0, dot);
+            }
+        }
+        return filename;
+    }
+
 
     /**
      * 异步上传Uri至阿里云
